@@ -2,8 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
-import quizRoutes from "./routes/quizRoutes.js";
-import { database } from "./dbConfig/index.js";
+import quizRoutes from "./routes/quizRoutes";
+import { database } from "./dbConfig/index";
+import questionsRoutes from "./routes/questionRoutes";
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/quiz", quizRoutes);
+app.use("/question", questionsRoutes);
 
 database.on("error", console.error.bind(console, "MongoDB connection error:"));
 
