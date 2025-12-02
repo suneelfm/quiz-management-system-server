@@ -15,7 +15,7 @@ export const getQuiz: RequestHandler<
     QuizModel.findById(req.params.quizId)
       .lean()
       .then((data) => {
-        res.send({
+        res.status(200).send({
           data,
           message: "Quiz has fetched successfully.",
         });
@@ -52,24 +52,29 @@ export const getQuizzes: RequestHandler<{}, any, any, Record<string, any>> = (
     },
   ])
     .then((data) => {
-      res.send({ data, message: "Quizzes fetched successfully." });
+      res.status(200).send({ data, message: "Quizzes fetched successfully." });
     })
     .catch((error) => {
       res.status(500).send({ message: "Something went wrong", error });
     });
 };
 
-export const createQuiz: RequestHandler<{}, any, any, Record<string, any>> = (
-  req,
-  res,
-  next
-) => {
+export const createQuiz: RequestHandler<
+  {},
+  any,
+  {
+    quizTitle: string;
+  },
+  Record<string, any>
+> = (req, res, next) => {
   try {
     const newQuiz = new QuizModel({ _id: v4(), ...req.body });
     newQuiz
       .save()
       .then((data) => {
-        res.send({ data, message: "Quiz has been created successfully." });
+        res
+          .status(201)
+          .send({ data, message: "Quiz has been created successfully." });
       })
       .catch((error) =>
         res
@@ -89,7 +94,9 @@ export const updateQuiz: RequestHandler<
 > = (req, res, next) => {
   try {
     QuizModel.findOneAndUpdate({ _id: req.body._id }, req.body)
-      .then(() => res.send({ message: "Quiz Title updated successfully." }))
+      .then(() =>
+        res.status(200).send({ message: "Quiz Title updated successfully." })
+      )
       .catch((error) =>
         res.status(500).send({ message: "Something went wrong", error })
       );
@@ -112,7 +119,7 @@ export const deleteQuiz: RequestHandler<
       QuestionModel.deleteMany({ quizId: req.params.quizId }),
     ])
       .then(() =>
-        res.send({
+        res.status(204).send({
           message: "Quiz and respective questions has be deleted successfully.",
         })
       )
