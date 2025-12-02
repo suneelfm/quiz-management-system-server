@@ -17,6 +17,8 @@ app.get("/", (req, res, next) => {
   res.send("Hello");
 });
 
+app.use("/quiz", quizRoutes);
+
 database.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 app.listen(8081, () => console.log("App started"));
