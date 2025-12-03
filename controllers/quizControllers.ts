@@ -130,3 +130,34 @@ export const deleteQuiz: RequestHandler<
     next(error);
   }
 };
+
+export const submitQuiz: RequestHandler<
+  {},
+  any,
+  { quizId: string; answers: { [key: string]: string } },
+  Record<string, any>
+> = (req, res, next) => {
+  try {
+    QuestionModel.find({ quizId: req.body.quizId })
+      .then((data) => {
+        let result = 0;
+        let total = 0;
+        data.forEach(({ _id, answer, marks }) => {
+          if (req.body.answers[_id] === answer) {
+            result += marks ?? 1;
+          }
+          total += marks ?? 1;
+        });
+        res.status(200).send({
+          message: "You have successfully submitted your quiz.",
+          result,
+          total,
+        });
+      })
+      .catch((error) =>
+        res.status(500).send({ message: "Something went wrong", error })
+      );
+  } catch (error) {
+    next(error);
+  }
+};

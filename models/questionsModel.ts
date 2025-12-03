@@ -7,6 +7,7 @@ const questionSchema = new mongoose.Schema({
   options: { type: [{ type: String }] },
   answer: { type: String, required: true },
   questionType: { type: String, required: true },
+  marks: { type: Number, required: true },
 });
 
 export const QuestionModel = mongoose.model("questions", questionSchema);

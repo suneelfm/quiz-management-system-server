@@ -4,6 +4,7 @@ import {
   deleteQuiz,
   getQuiz,
   getQuizzes,
+  submitQuiz,
   updateQuiz,
 } from "../controllers/quizControllers";
 
@@ -15,5 +16,6 @@ quizRoutes.get("", getQuizzes);
 quizRoutes.post("", createQuiz);
 quizRoutes.put("", updateQuiz);
 quizRoutes.delete("/:quizId", deleteQuiz);
+quizRoutes.post("/submit", submitQuiz);
 
 export default quizRoutes;
